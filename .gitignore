@@ -1,2 +1,4 @@
 .idea
 sharefood.iml
+*.pyc
+db.sqlite3
