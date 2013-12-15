@@ -3,21 +3,38 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-class FoodDonation(models.Model):
+class DonatedFood(models.Model):
     AVAILABLE = 'A'
     RESERVED = 'R'
     DELIVERED = 'D'
-    STATUS_CHOISES = (
+    CANCELLED = 'C'
+    STATUS_CHOICES = (
         (AVAILABLE, 'Available'),
         (RESERVED, 'Reserved'),
-        (DELIVERED, 'Delivered')
+        (DELIVERED, 'Delivered'),
+        (CANCELLED, 'Cancelled'),
     )
-    donor = models.ForeignKey(User, related_name='donor_set')
-    beneficiary = models.ForeignKey(User, related_name='beneficiary_set')
+    donor = models.ForeignKey(User, related_name='donated_food_set')
+    description = models.CharField(max_length=250)
     quantity = models.IntegerField()
     pub_date = models.DateTimeField(verbose_name='date published', auto_now_add=True)
-    reserved_date = models.DateTimeField(verbose_name='date reserved')
-    delivered_date = models.DateTimeField(verbose_name='date delivered')
     pickup_address = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUS_CHOISES, default=AVAILABLE)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=AVAILABLE)
 
+
+class FoodReservation(models.Model):
+    RESERVED = 'R'
+    DELIVERED = 'D'
+    CANCELLED = 'C'
+    STATUS_CHOICES = (
+        (RESERVED, 'Reserved'),
+        (DELIVERED, 'Delivered'),
+        (CANCELLED, 'Cancelled'),
+    )
+    donation = models.ForeignKey(DonatedFood)
+    beneficiary = models.ForeignKey(User, related_name='received_food_set')
+    description = models.CharField(max_length=250)
+    quantity = models.IntegerField()
+    reserved_date = models.DateTimeField(verbose_name='date reserved', auto_now_add=True)
+    delivered_date = models.DateTimeField(verbose_name='date delivered')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=RESERVED)
