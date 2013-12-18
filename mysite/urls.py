@@ -13,10 +13,8 @@ router = DefaultRouter()
 router.register(r'food_donations', views.DonatedFoodViewSet)
 router.register(r'users', views.UserViewSet)
 
-dummy_router = SimpleRouter()
-dummy_router.register(r'food_donations', views.DonatedFoodViewSet)
-
-food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(dummy_router, r'food_donations', lookup='food_donations')
+food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(router, r'food_donations',
+                                                                         lookup='food_donations')
 food_donations_router.register(r'reservations', views.FoodReservationViewSet)
 
 urlpatterns = patterns('',
