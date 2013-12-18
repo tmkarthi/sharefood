@@ -26,7 +26,7 @@ class FoodReservation(models.Model):
     RESERVED = 'R'
     DELIVERED = 'D'
     CANCELLED = 'C'
-    STATUS_CHOICES = (
+    RESERVATION_STATUS_CHOICES = (
         (RESERVED, 'Reserved'),
         (DELIVERED, 'Delivered'),
         (CANCELLED, 'Cancelled'),
@@ -36,5 +36,5 @@ class FoodReservation(models.Model):
     description = models.CharField(max_length=250)
     quantity = models.IntegerField()
     reserved_date = models.DateTimeField(verbose_name='date reserved', auto_now_add=True)
-    delivered_date = models.DateTimeField(verbose_name='date delivered')
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=RESERVED)
+    delivered_date = models.DateTimeField(verbose_name='date delivered', null=True)
+    status = models.CharField(max_length=1, choices=RESERVATION_STATUS_CHOICES, default=RESERVED)
