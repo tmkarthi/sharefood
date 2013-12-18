@@ -12,7 +12,7 @@ admin.autodiscover()
 donations_router = DefaultRouter()
 donations_router.register(r'donations', views.DonatedFoodViewSet)
 
-users_router = DefaultRouter()
+users_router = SimpleRouter()
 users_router.register(r'users', views.UserViewSet)
 
 food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(donations_router, r'donations',
