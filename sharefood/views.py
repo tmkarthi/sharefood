@@ -58,11 +58,11 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
     #     return Response(snippet.highlighted)
 
     def get_queryset(self):
-        food_donations_id = self.kwargs.get('food_donations_pk')
+        food_donations_id = self.kwargs.get('donations_pk')
         return FoodReservation.objects.filter(donation_id__exact=food_donations_id)
 
     def pre_save(self, obj):
-        food_donations_id = self.kwargs.get('food_donations_pk')
+        food_donations_id = self.kwargs.get('donations_pk')
         obj.donation = DonatedFood.objects.get(pk=food_donations_id)
         obj.beneficiary = self.request.user
 
