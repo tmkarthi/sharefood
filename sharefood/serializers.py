@@ -26,7 +26,7 @@ class FoodReservationSerializer(serializers.ModelSerializer):
             'id', 'donation', 'beneficiary', 'description', 'quantity', 'reserved_date', 'delivered_date', 'status')
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'donated_food_set')
+        fields = ('username', 'donated_food_set', 'received_food_set')

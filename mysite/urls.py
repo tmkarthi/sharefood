@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from rest_framework_nested import routers
 import rest_framework_nested
 from rest_framework_nested.routers import SimpleRouter
 
@@ -21,8 +20,8 @@ food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(dummy_r
 food_donations_router.register(r'reservations', views.FoodReservationViewSet)
 
 urlpatterns = patterns('',
-                       url(r'^', include(router.urls)),
-                       url(r'^', include(food_donations_router.urls)),
-                       url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                       url(r'^api/v1/food/', include(router.urls)),
+                       url(r'^api/v1/food/', include(food_donations_router.urls)),
+                       url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                        url(r'^admin/', include(admin.site.urls)),
 )
