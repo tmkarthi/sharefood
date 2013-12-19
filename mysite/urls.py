@@ -9,20 +9,17 @@ from mysite.routers import DefaultRouter
 
 admin.autodiscover()
 
-donations_router = DefaultRouter()
-donations_router.register(r'donations', views.DonatedFoodViewSet)
+router = DefaultRouter()
+router.register(r'food/donations', views.DonatedFoodViewSet, base_name='donations')
+router.register(r'users', views.UserViewSet)
 
-users_router = SimpleRouter()
-users_router.register(r'users', views.UserViewSet)
-
-food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(donations_router, r'donations',
+food_donations_router = rest_framework_nested.routers.NestedSimpleRouter(router, r'food/donations',
                                                                          lookup='donations')
 food_donations_router.register(r'reservations', views.FoodReservationViewSet)
 
 urlpatterns = patterns('',
-                       url(r'^api/v1/', include(users_router.urls)),
-                       url(r'^api/v1/food/', include(donations_router.urls)),
-                       url(r'^api/v1/food/', include(food_donations_router.urls)),
+                       url(r'^api/v1/', include(router.urls)),
+                       url(r'^api/v1/', include(food_donations_router.urls)),
                        url(r'^api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
                        url(r'^admin/', include(admin.site.urls)),
 )
