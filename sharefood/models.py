@@ -5,12 +5,10 @@ from django.contrib.auth.models import User
 # Create your models here.
 class DonatedFood(models.Model):
     AVAILABLE = 'A'
-    RESERVED = 'R'
     DELIVERED = 'D'
     CANCELLED = 'C'
     STATUS_CHOICES = (
         (AVAILABLE, 'Available'),
-        (RESERVED, 'Reserved'),
         (DELIVERED, 'Delivered'),
         (CANCELLED, 'Cancelled'),
     )
