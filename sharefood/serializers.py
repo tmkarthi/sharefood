@@ -5,12 +5,13 @@ from django.contrib.auth.models import User
 
 class DonatedFoodSerializer(serializers.ModelSerializer):
     donor = serializers.Field(source='donor.username')
+    balance_quantity = serializers.Field(source='balance_quantity')
     pub_date = serializers.Field(source='pub_date')
     status = serializers.Field(source='status')
 
     class Meta:
         model = DonatedFood
-        fields = ('id', 'donor', 'description', 'quantity', 'pub_date', 'pickup_address', 'status')
+        fields = ('id', 'donor', 'description', 'quantity', 'balance_quantity', 'pub_date', 'pickup_address', 'status')
 
 
 class FoodReservationSerializer(serializers.ModelSerializer):

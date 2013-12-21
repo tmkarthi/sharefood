@@ -21,13 +21,24 @@ class DonatedFood(models.Model):
     pickup_address = models.TextField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=AVAILABLE)
 
+    @property
+    def balance_quantity(self):
+        reservations = self.foodreservation_set.exclude(
+            status__in=[FoodReservation.CANCELLED, FoodReservation.REQUESTED])
+        balance = self.quantity
+        for reservation in reservations:
+            balance -= reservation.quantity
+        return balance
+
 
 class FoodReservation(models.Model):
-    RESERVED = 'R'
+    REQUESTED = 'R'
+    ACCEPTED = 'A'
     DELIVERED = 'D'
     CANCELLED = 'C'
     RESERVATION_STATUS_CHOICES = (
-        (RESERVED, 'Reserved'),
+        (REQUESTED, 'Requested'),
+        (ACCEPTED, 'Accepted'),
         (DELIVERED, 'Delivered'),
         (CANCELLED, 'Cancelled'),
     )
@@ -37,4 +48,4 @@ class FoodReservation(models.Model):
     quantity = models.IntegerField()
     reserved_date = models.DateTimeField(verbose_name='date reserved', auto_now_add=True)
     delivered_date = models.DateTimeField(verbose_name='date delivered', null=True)
-    status = models.CharField(max_length=1, choices=RESERVATION_STATUS_CHOICES, default=RESERVED)
+    status = models.CharField(max_length=1, choices=RESERVATION_STATUS_CHOICES, default=REQUESTED)
