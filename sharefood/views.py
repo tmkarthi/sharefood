@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework import viewsets
+import rest_framework
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -27,8 +28,13 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsDonorOrReadOnly,)
 
-    def change_status(self, status):
+    def change_status(self, status, from_statuses):
         donated_food = self.get_object()
+        if not donated_food.status in from_statuses:
+            return Response(
+                '{"error_code": "transition.not.allowed",'
+                ' "error_message": "Status transition not allowed from %s to %s"}' % (donated_food.status, status),
+                rest_framework.status.HTTP_400_BAD_REQUEST)
         donated_food.status = status
         donated_food.save()
         serializer = DonatedFoodSerializer(donated_food)
@@ -36,11 +42,11 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
 
     @action()
     def deliver(self, request, *args, **kwargs):
-        return self.change_status(DonatedFood.DELIVERED)
+        return self.change_status(DonatedFood.DELIVERED, [DonatedFood.AVAILABLE])
 
     @action()
     def cancel(self, request, *args, **kwargs):
-        return self.change_status(DonatedFood.CANCELLED)
+        return self.change_status(DonatedFood.CANCELLED, [DonatedFood.AVAILABLE])
 
     def pre_save(self, obj):
         obj.donor = self.request.user
@@ -90,8 +96,13 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
     def cancel(self, request, *args, **kwargs):
         return self.change_status(FoodReservation.CANCELLED)
 
-    def change_status(self, status):
+    def change_status(self, status, from_statuses):
         food_reservation = self.get_object()
+        if not food_reservation.status in from_statuses:
+            return Response(
+                '{"error_code": "transition.not.allowed",'
+                ' "error_message": "Status transition not allowed from %s to %s"}' % (food_reservation.status, status),
+                rest_framework.status.HTTP_400_BAD_REQUEST)
         food_reservation.status = status
         food_reservation.save()
         serializer = FoodReservationSerializer(food_reservation)
