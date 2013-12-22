@@ -70,11 +70,6 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                           IsDonorOrBeneficiaryOrReadOnly,)
 
-    # @link(renderer_classes=(renderers.StaticHTMLRenderer,))
-    # def highlight(self, request, *args, **kwargs):
-    #     snippet = self.get_object()
-    #     return Response(snippet.highlighted)
-
     def get_queryset(self):
         food_donations_id = self.kwargs.get('donations_pk')
         return FoodReservation.objects.filter(donation_id__exact=food_donations_id)
@@ -86,15 +81,15 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
 
     @action()
     def accept(self, request, *args, **kwargs):
-        return self.change_status(FoodReservation.ACCEPTED)
+        return self.change_status(FoodReservation.ACCEPTED, [FoodReservation.REQUESTED])
 
     @action()
     def deliver(self, request, *args, **kwargs):
-        return self.change_status(FoodReservation.DELIVERED)
+        return self.change_status(FoodReservation.DELIVERED, [FoodReservation.REQUESTED, FoodReservation.ACCEPTED])
 
     @action()
     def cancel(self, request, *args, **kwargs):
-        return self.change_status(FoodReservation.CANCELLED)
+        return self.change_status(FoodReservation.CANCELLED, [FoodReservation.REQUESTED, FoodReservation.ACCEPTED])
 
     def change_status(self, status, from_statuses):
         food_reservation = self.get_object()
