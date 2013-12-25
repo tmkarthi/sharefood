@@ -16,7 +16,11 @@ class DonatedFood(models.Model):
     description = models.CharField(max_length=250)
     quantity = models.IntegerField()
     pub_date = models.DateTimeField(verbose_name='date published', auto_now_add=True)
-    pickup_address = models.TextField()
+    pickup_address_1 = models.CharField(max_length=100)
+    pickup_address_2 = models.CharField(max_length=100)
+    pickup_city = models.CharField(max_length=40)
+    postal_code = models.CharField(max_length=6)
+    phone_number = models.CharField(max_length=10)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=AVAILABLE)
 
     @property

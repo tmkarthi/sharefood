@@ -11,7 +11,8 @@ class DonatedFoodSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DonatedFood
-        fields = ('id', 'donor', 'description', 'quantity', 'balance_quantity', 'pub_date', 'pickup_address', 'status')
+        fields = ('id', 'donor', 'description', 'quantity', 'balance_quantity', 'pub_date', 'pickup_address_1',
+                  'pickup_address_2', 'pickup_city', 'postal_code', 'phone_number', 'status')
 
 
 class FoodReservationSerializer(serializers.ModelSerializer):
