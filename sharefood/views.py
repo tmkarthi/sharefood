@@ -32,8 +32,8 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
         donated_food = self.get_object()
         if not donated_food.status in from_statuses:
             return Response(
-                '{"error_code": "transition.not.allowed",'
-                ' "error_message": "Status transition not allowed from %s to %s"}' % (donated_food.status, status),
+                {"error_code": "transition.not.allowed",
+                 "error_message": "Status transition not allowed from %s to %s" % (donated_food.status, status)},
                 rest_framework.status.HTTP_400_BAD_REQUEST)
         donated_food.status = status
         donated_food.save()
@@ -95,8 +95,8 @@ Try it yourself by logging in as one of these four users: **amy**, **max**,
         food_reservation = self.get_object()
         if not food_reservation.status in from_statuses:
             return Response(
-                '{"error_code": "transition.not.allowed",'
-                ' "error_message": "Status transition not allowed from %s to %s"}' % (food_reservation.status, status),
+                {"error_code": "transition.not.allowed",
+                 "error_message": "Status transition not allowed from %s to %s" % (food_reservation.status, status)},
                 rest_framework.status.HTTP_400_BAD_REQUEST)
         food_reservation.status = status
         food_reservation.save()
@@ -113,4 +113,4 @@ serialized using a hyperlinked representation.
 """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    # lookup_field = 'username'
+    lookup_field = 'username'
